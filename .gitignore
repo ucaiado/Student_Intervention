@@ -1,0 +1,10 @@
+.directory
+.DS_Store
+*.pyc
+*~
+\#*
+.\#*
+*\(Autosaved\)*
+.ipynb_checkpoints/
+site/third/my_application/uploads/
+*.log

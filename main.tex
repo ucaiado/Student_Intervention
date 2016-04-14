@@ -42,25 +42,75 @@ I will suppose that the data available to create the model is a representative b
 \subsection{Classification vs Regression}
 The model that will be developed is a Classifier. According to \cite{Hastie_2009}, the distinction in the output type has led to a naming convention for prediction tasks: \textit{regression} when we predict quantitative (continuous) outputs, and \textit{classification} when we predict qualitative outputs (discrete). As the goal of this project is to identify if the student will succeed, the problem posed is a classification problem once it requires a binary answer (passed, failed).
 
-\section{Theory 2-3 pages}
-\label{sec:theory}
+\section{Exploring the Data}
+\label{sec:exploring_data}
+In this section, we will explore the data to look for insides about the features.
 
-\subsection{Two-dimensional Electron Gas}
-Here, explain the concept of a 2-DEG in GaAs/AlGaAs. What is a 2-DEG and why does it arise?
+\subsection{Basic Facts}
+Let's go ahead and execute a basic description of the student dataset (see Table~\ref{tab:basicfacts}):
+\begin{table}
+\centering
+\begin{tabular}{l|r}
+Item & Value \\\hline
+Total number of students & 42 \\
+Total number of students & 395 \\
+Number of students who passed & 265 \\
+Number of students who failed & 130 \\
+Number of features & 31 \\
+Graduation rate of the class & 67.09/%
 
-\subsection{Hall Effect}
-Explain the classical Hall effect in your own words. What do I measure at $B=0$? And what happens if $B>0$? Which effect gives rise to the voltage drop in the vertical direction?
+\end{tabular}
+\caption{\label{tab:basicfacts}Facts About the Dataset.}
+\end{table}
 
-\subsection{Quantum Hall Effect}
-Explain the IQHE in your own words. What does the density of states look like in a 2-DEG when $B=0$? What are Landau levels and how do they arise? What are edge states? What does the electron transport look like when you change the magnetic field? What do you expect to measure?
+All the 31 features in the dataset are discrete and Qualitative. There are 14 binary data, 13 ordered categorical variables and other 4 Categorical features. Among them, there are variables such as Father's Job, Family Size, if the student wants to take higher education or if he/she is in a romantic relationship. The data offers a pretty comprehensive profile of student life. At this point, it 's hard to say what features are relevant or not. A complete description of each variable can be found on the Github [project page](https://github.com/udacity/machine-learning/tree/master/projects/student_intervention).
 
-\section{Experiment 1-2 pages}
-\subsection{Fabrication}
-Explain a step-by-step recipe for fabrication here. How long did you etch and why? What is an Ohmic contact?
-\subsection{Experimental set-up}
-Explain the experimental set-up here. Use a schematic picture (make it yourself in photoshop, paint, ...) to show how the components are connected. Briefly explain how a lock-in amplifier works.
+Due to the nature of the data, in ``Preparing the Data'' section, the features will be coded via \href{_dummy variables_}{https://www.moresteam.com/whitepapers/download/dummy-variables.pdf}. As described by \cite{Hastie_2009}, this method consists in representing a K-Level qualitative variable by a vector of K binary variables, where only one of which is ``on'' at a time. There is no missing data on this dataset and no presence of ``real'' outliers.
 
-\section{Results and interpretation 2-3 pages}
+
+
+\subsection{How the features are spread out}
+Before moving on, I am going to plot each feature to see how each inner classes of each variable are divided between the target labels ``Passed'' and ``Not Passed.''Below is plotted the Categorical features of the dataset. Here is possible to see that when the guardian is not the mother nor the father, it is more likely that the pupil not pass. Also, when the mother's occupation is teaching (_Fjob_), is likely that the student to pass.
+
+
+\begin{figure}
+\centering
+\includegraphics[width=1\textwidth]{figures/categorical/categorical.png}
+\caption{\label{fig:categorical}Categorical Data.}
+\end{figure}
+
+Looking at the Ordered Categorical Features, where there is an ordering of the values, the features _absences_, _age_ and _failure_ stand out. The _failures_ feature is the number of past class failures ($n$ if $1<=n<3$, else $4$) and absences is the number of school absences. In all these variables, the bigger the number, the higher the likelihood of the student does not pass.
+
+\begin{figure}
+\centering
+\includegraphics[width=1\textwidth]{figures/ordCategorical/ordCategorical.png
+\caption{\label{fig:ordCategorical}Ordered Data.}
+\end{figure}
+
+Finally, looking at the Binary Data, what more draw the attention are the features _higher_ and _schoolsup_. The feature _higher_ is if the student wants to take higher education and _schoolsup_ is if the student has extra educational support. Some features, as _activities_ and _nursery_, presented a very similar distribution between the classes
+
+\begin{figure}
+\centering
+\includegraphics[width=1\textwidth]{figures/binary/binary.png}
+\caption{\label{fig:binary}Binary Data.}
+\end{figure}
+
+As can be seen, there are a lot of features that might add up to the classification process, although some features may be not so relevant It is important to notice that the model developed with this amount of data (365 data points) and variables (31) can suffer from the curse of dimensionality. Many of the features will be converted into dummy variables, what could increase the amount of data needed to build an accurate model. Maybe would be interesting to test if treat the binary data as numerical to reduce the necessity to split into dummies (reducing the dimension of the dataset) can increase the performance. It will be made in section 5.
+
+\section{Preparing the Data}
+In this section, we will prepare the data for modeling, training and testing.
+\subsection{Identify feature and target columns}
+It is often the case that the data you obtain contains non-numeric features. This can be a problem, as most machine learning algorithms expect numeric data to perform computations with.
+
+% code snipet
+
+\subsection{Preprocess feature columns}
+...
+
+\subsection{Split data into training and test sets}
+...
+
+\section{Training and Evaluating Models}
 Show a graph of the longitudinal resistivity ($\rho_{xx}$) and Hall resistivity ($\rho_{xy}$) versus magnetic field, extracted from the raw data shown in figure \ref{fig:data}. You will have the link to the data in your absalon messages, if not e-mail Guen (guen@nbi.dk). Explain how you calculated these values, and refer to the theory.
 
 \begin{figure}

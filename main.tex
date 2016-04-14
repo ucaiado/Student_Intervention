@@ -66,14 +66,12 @@ Graduation rate of the class & 67.09 \%
 \caption{\label{tab:basicfacts}Facts About the Dataset.}
 \end{table}
 
-All the 31 features in the dataset are discrete and Qualitative. There are 14 binary data, 13 ordered categorical variables and other 4 Categorical features. Among them, there are variables such as Father's Job, Family Size, if the student wants to take higher education or if he/she is in a romantic relationship. The data offers a pretty comprehensive profile of student life. At this point, it 's hard to say what features are relevant or not. A complete description of each variable can be found on the Github \href{https://github.com/udacity/machine-learning/tree/master/projects/student_intervention}{project page}.
-
-Due to the nature of the data, in ``Preparing the Data'' section, the features will be coded via \href{https://www.moresteam.com/whitepapers/download/dummy-variables.pdf}{\textit{dummy variables}}. As described by \cite{Hastie_2009}, this method consists in representing a K-Level qualitative variable by a vector of K binary variables, where only one of which is ``on'' at a time. There is no missing data on this dataset and no presence of ``real'' outliers.
+All the 31 features in the dataset are discrete and Qualitative. There are 14 binary data, 13 ordered categorical variables and other 4 Categorical features. Among them, there are variables such as Father's Job, Family Size, if the student wants to take higher education or if he/she is in a romantic relationship. The data offers a pretty comprehensive profile of student life. At this point, it is hard to say what features are relevant or not. A complete description of each variable can be found on the Github \href{https://github.com/udacity/machine-learning/tree/master/projects/student_intervention}{project page}. There is no missing data on this dataset and no presence of ``real'' outliers.
 
 
 
 \subsection{How the features are spread out}
-Before moving on, I am going to plot each feature to see how each inner classes of each variable are divided between the target labels ``Passed'' and ``Not Passed''. In the Figure~\ref{fig:categorical} is plotted the Categorical features of the dataset. Here is possible to see that when the guardian is not the mother nor the father, it is more likely that the pupil not pass. Also, when the mother's occupation is teaching (\textit{Fjob}), is likely that the student to pass.
+Before moving on, I am going to plot each feature to see how each inner classes of each variable are divided between the target labels ``Passed'' and ``Not Passed''. In the Figure~\ref{fig:categorical} is plotted the Categorical features of the dataset. Here is possible to see that when the guardian is not the mother nor the father, it is more likely that the pupil not pass. Also, when the mother's occupatsion is teaching (\textit{Fjob}), is likely that the student to pass.
 
 
 \begin{figure}[ht]
@@ -110,28 +108,57 @@ It is often the case that the data you obtain contains non-numeric features. Thi
 % code snipet
 
 \subsection{Preprocess feature columns}
-...
+As can be seen above, there are several non-numeric columns in the dataset that need to be converted. The easiest case is when are only two categories, as ``yes'' or ``no'', e.g. _internet_. These are often represented by single binary digit as $0$ or $1$.
+
+According to \cite{Hastie_2009}, when there are more than two categories, the most commonly alternative used is coding via \href{https://www.moresteam.com/whitepapers/download/dummy-variables.pdf}{\textit{dummy variables}}. This method consists in representing a $K$-Level qualitative variable by a vector of $K$ binary variables, where only one of which is ``on'' at a time.
+
+So, for example, the \textit{Fjob} feature will be split into $5$ new features ( \textit{Fjob_teacher}, \textit{Fjob_other}, \textit{Fjob_services}, etc.), and will be assigned a $1$ to one of them and $0$ to all other columns.
+
+This transformation will be performed using the pandas function `get_dummies()`. Initially, all binary data that the classes do not correspond to $yes$/$no$ will be converted into dummies.
+
+% insert code snippet
+
+Now, all binary data will be converted into $0$/$1$ for future tests. The amount of features just reduced from 48 to 43.
+
+% insert code snippet
 
 \subsection{Split data into training and test sets}
-...
+So far, we have converted all _categorical_ features into numeric values. In this next step, we split the data (both features and corresponding labels) into training and test sets.
+
 
 \section{Training and Evaluating Models}
-Show a graph of the longitudinal resistivity ($\rho_{xx}$) and Hall resistivity ($\rho_{xy}$) versus magnetic field, extracted from the raw data shown in figure x. You will have the link to the data in your absalon messages, if not e-mail Guen (guen@nbi.dk). Explain how you calculated these values, and refer to the theory.
-
-\subsection{Classical regime}
-Calculate the sheet electron density $n_{s}$ and electron mobility $\mu$ from the data in the low-field regime, and refer to the theory in section y. Explain how you retrieved the values from the data (did you use a linear fit?).
-Round values off to 1 or 2 significant digits: 8.1643 ~= 8.2. Also, 5e-6 is easier to read than 0.000005.
-
-!OBS: This part is optional (only if you have time left).
-Calculate the uncertainty as follows: \newline $u(f(x, y, z)) = \sqrt{(\frac{\delta f}{\delta{x}} u(x))^{2} + (\frac{\delta f}{\delta{y}} u(y))^{2} + (\frac{\delta f}{\delta{z}} u(z))^{2}}$, where $f$ is the calculated value ($n_{s}$ or $\mu$), $x, y, z$ are the variables taken from the measurement and $u(x)$ is the uncertainty in x (and so on).
+...
 
 \section{Choosing the Best Model}
-Discuss your results. Compare the two values of $n_{s}$ that you've found in the previous section. Compare your results with literature and comment on the difference. If you didn't know the value of the resistance quantum, would you be able to deduce it from your measurements? If yes/no, why?
+...
 
 
 
 \bibliographystyle{plain}
 \bibliography{bibliography/biblio.bib}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 \newpage

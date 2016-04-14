@@ -23,6 +23,7 @@
 There exists a push from educators and administrators to raise the likelihood of students successfully complete their programs. The aim of this project is to identify students who need intervention before they drop out of school. My goal is to use concepts from supervised machine learning to find the most effective model with the least amount of computation costs that identify such students.
 \end{abstract}
 
+
 \section{Introduction}
 \label{sec:introduction}
 
@@ -44,6 +45,7 @@ I will suppose that the data available to create the model is a representative b
 
 \subsection{Classification vs Regression}
 The model that will be developed is a Classifier. According to \cite{Hastie_2009}, the distinction in the output type has led to a naming convention for prediction tasks: \textit{regression} when we predict quantitative (continuous) outputs, and \textit{classification} when we predict qualitative outputs (discrete). As the goal of this project is to identify if the student will succeed, the problem posed is a classification problem once it requires a binary answer (passed, failed).
+
 
 \section{Exploring the Data}
 \label{sec:exploring_data}
@@ -69,11 +71,8 @@ Graduation rate of the class & 67.09 \%
 
 All the 31 features in the dataset are discrete and Qualitative. There are 14 binary data, 13 ordered categorical variables and other 4 Categorical features. Among them, there are variables such as Father's Job, Family Size, if the student wants to take higher education or if he/she is in a romantic relationship. The data offers a pretty comprehensive profile of student life. At this point, it is hard to say what features are relevant or not. A complete description of each variable can be found on the Github \href{https://github.com/udacity/machine-learning/tree/master/projects/student_intervention}{project page}. There is no missing data on this dataset and no presence of ``real'' outliers.
 
-
-
 \subsection{How the features are spread out}
 Before moving on, I am going to plot each feature to see how each inner classes of each variable are divided between the target labels ``Passed'' and ``Not Passed''. In the Figure~\ref{fig:categorical} is plotted the Categorical features of the dataset. Here is possible to see that when the guardian is not the mother nor the father, it is more likely that the pupil not pass. Also, when the mother's occupatsion is teaching (\textit{Fjob}), is likely that the student to pass.
-
 
 \begin{figure}[ht]
 \centering
@@ -89,7 +88,6 @@ Looking at the Ordered Categorical Features (Figure~\ref{fig:ordCategorical}), w
 \caption{\label{fig:ordCategorical}Ordered Data.}
 \end{figure}
 
-
 Finally, looking at the Binary Data (Figure~\ref{fig:binary}), what more draw the attention are the features \textit{higher} and \textit{schoolsup}. The feature \textit{higher} is if the student wants to take higher education and \textit{schoolsup} is if the student has extra educational support. Some features, as \textit{activities} and \textit{nursery}, presented a very similar distribution between the classes
 
 \begin{figure}[ht]
@@ -98,8 +96,8 @@ Finally, looking at the Binary Data (Figure~\ref{fig:binary}), what more draw th
 \caption{\label{fig:binary}Binary Data.}
 \end{figure}
 
-
 As can be seen, there are a lot of features that might add up to the classification process, although some features may be not so relevant It is important to notice that the model developed with this amount of data (365 data points) and variables (31) can suffer from the  \href{https://en.wikipedia.org/wiki/Curse_of_dimensionality}{\textit{curse of dimensionality}}. Many of the features will be converted into dummy variables, what could increase the amount of data needed to build an accurate model. Maybe would be interesting to test if treat the binary data as numerical to reduce the necessity to split into dummies (reducing the dimension of the dataset) can increase the performance. It will be made in section 5.
+
 
 \section{Preparing the Data}
 In this section, I will prepare the data for modeling, training and testing.
@@ -132,7 +130,6 @@ Feature values:
 3     GP   F   15       U     GT3       T     4     2
 4     GP   F   16       U     GT3       T     3     3 ...
 \end{lstlisting}
-
 
 \subsection{Preprocess feature columns}
 As can be seen above, there are several non-numeric columns in the dataset that need to be converted. The easiest case is when are only two categories, as ``yes'' or ``no'', e.g. \textit{internet}. These are often represented by single binary digit as $0$ or $1$.
@@ -191,11 +188,16 @@ absences
 \end{lstlisting}
 
 \subsection{Split data into training and test sets}
-So far, we have converted all \textit{categorical} features into numeric values. In this next step, we split the data (both features and corresponding labels) into training and test sets.
+So far, I have converted all \textit{categorical} features into numeric values. To be able to judge if the model chosen in the next section will generalize well from its experience, I will hold out part of the data to measure how the algorithms are performing on yet-unseen examples. In this next step, I am going to split the data (both features and corresponding labels) into training and test sets. I will use the function \textit{cross\_validation.train_test_split()} from \textit{scikit-learn} for that.
+\begin{lstlisting}
+Training set: 296 samples
+Test set: 99 samples
+\end{lstlisting}
 
 
 \section{Training and Evaluating Models}
-...
+Choose 3 supervised learning models that are available in scikit-learn, and appropriate for this problem. For each model ...
+
 
 \section{Choosing the Best Model}
 ...

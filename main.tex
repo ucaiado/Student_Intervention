@@ -51,7 +51,7 @@ In this section, we will explore the data to look for insides about the features
 \subsection{Basic Facts}
 Let's go ahead and execute a basic description of the student dataset (Table \ref{tab:basicfacts}):
 
-\begin{table}[h]
+\begin{table}[ht]
 \centering
 \begin{tabular}{l|r}
 Item & Value \\\hline
@@ -76,7 +76,7 @@ Due to the nature of the data, in ``Preparing the Data'' section, the features w
 Before moving on, I am going to plot each feature to see how each inner classes of each variable are divided between the target labels ``Passed'' and ``Not Passed''. In the Figure~\ref{fig:categorical} is plotted the Categorical features of the dataset. Here is possible to see that when the guardian is not the mother nor the father, it is more likely that the pupil not pass. Also, when the mother's occupation is teaching (\textit{Fjob}), is likely that the student to pass.
 
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[width=1\textwidth]{figures/categorical/categorical.png}
 \caption{\label{fig:categorical}Categorical Data.}
@@ -84,7 +84,7 @@ Before moving on, I am going to plot each feature to see how each inner classes 
 
 Looking at the Ordered Categorical Features (Figure~\ref{fig:ordCategorical}), where there is an ordering of the values, the features \textit{absences}, \textit{age} and \textit{failure} stand out. The \textit{failures} feature is the number of past class failures ($n$ if $1<=n<3$, else $4$) and absences is the number of school absences. In all these variables, the bigger the number, the higher the likelihood of the student does not pass.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[width=1\textwidth]{figures/ordCategorical/ordCategorical.png}
 \caption{\label{fig:ordCategorical}Ordered Data.}
@@ -93,7 +93,7 @@ Looking at the Ordered Categorical Features (Figure~\ref{fig:ordCategorical}), w
 
 Finally, looking at the Binary Data (Figure~\ref{fig:binary}), what more draw the attention are the features \textit{higher} and \textit{schoolsup}. The feature \textit{higher} is if the student wants to take higher education and \textit{schoolsup} is if the student has extra educational support. Some features, as \textit{activities} and \textit{nursery}, presented a very similar distribution between the classes
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[width=1\textwidth]{figures/binary/binary.png}
 \caption{\label{fig:binary}Binary Data.}
@@ -116,10 +116,10 @@ It is often the case that the data you obtain contains non-numeric features. Thi
 ...
 
 \section{Training and Evaluating Models}
-Show a graph of the longitudinal resistivity ($\rho_{xx}$) and Hall resistivity ($\rho_{xy}$) versus magnetic field, extracted from the raw data shown in figure \ref{fig:data}. You will have the link to the data in your absalon messages, if not e-mail Guen (guen@nbi.dk). Explain how you calculated these values, and refer to the theory.
+Show a graph of the longitudinal resistivity ($\rho_{xx}$) and Hall resistivity ($\rho_{xy}$) versus magnetic field, extracted from the raw data shown in figure x. You will have the link to the data in your absalon messages, if not e-mail Guen (guen@nbi.dk). Explain how you calculated these values, and refer to the theory.
 
 \subsection{Classical regime}
-Calculate the sheet electron density $n_{s}$ and electron mobility $\mu$ from the data in the low-field regime, and refer to the theory in section \ref{sec:theory}. Explain how you retrieved the values from the data (did you use a linear fit?).
+Calculate the sheet electron density $n_{s}$ and electron mobility $\mu$ from the data in the low-field regime, and refer to the theory in section y. Explain how you retrieved the values from the data (did you use a linear fit?).
 Round values off to 1 or 2 significant digits: 8.1643 ~= 8.2. Also, 5e-6 is easier to read than 0.000005.
 
 !OBS: This part is optional (only if you have time left).
@@ -141,7 +141,7 @@ Discuss your results. Compare the two values of $n_{s}$ that you've found in the
 
 First you have to upload the image file (JPEG, PNG or PDF) from your computer to writeLaTeX using the upload link the project menu. Then use the includegraphics command to include it in your document. Use the figure environment and the caption command to add a number and a caption to your figure. See the code for Figure \ref{fig:frog} in this section for an example.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[width=0.3\textwidth]{frog.jpg}
 \caption{\label{fig:frog}This frog was uploaded to writeLaTeX via the project menu.}
@@ -151,7 +151,7 @@ First you have to upload the image file (JPEG, PNG or PDF) from your computer to
 
 Use the table and tabular commands for basic tables --- see Table~\ref{tab:widgets}, for example.
 
-\begin{table}[h]
+\begin{table}[ht]
 \centering
 \begin{tabular}{l|r}
 Item & Quantity \\\hline

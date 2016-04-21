@@ -9,6 +9,9 @@
 \usepackage{listings}
 
 
+
+
+
 \title{Building a Student Intervention System}
 
 \author{Uirá Caiado}
@@ -16,6 +19,7 @@
 \date{\today}
 
 \begin{document}
+
 \maketitle
 
 \begin{abstract}
@@ -23,6 +27,9 @@
 There exists a push from educators and administrators to raise the likelihood of students successfully complete their programs. The aim of this project is to identify students who need intervention before they drop out of school. My goal is to use concepts from supervised machine learning to find the most effective model with the least amount of computation costs that identify such students.
 \end{abstract}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% INTRODUCTION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Introduction}
 \label{sec:introduction}
@@ -45,6 +52,10 @@ I will suppose that the data available to create the model is a representative b
 
 \subsection{Classification vs Regression}
 The model that will be developed is a Classifier. According to \cite{Hastie_2009}, the distinction in the output type has led to a naming convention for prediction tasks: \textit{regression} when we predict quantitative (continuous) outputs, and \textit{classification} when we predict qualitative outputs (discrete). As the goal of this project is to identify if the student will succeed, the problem posed is a classification problem once it requires a binary answer (passed, failed).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% EXPLORING THE DATA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 \section{Exploring the Data}
@@ -76,7 +87,7 @@ Before moving on, I am going to plot each feature to see how each inner classes 
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=1\textwidth]{figures/categorical/categorical.png}
+\includegraphics[width=1\textwidth]{figures/categorical.png}
 \caption{\label{fig:categorical}Categorical Data.}
 \end{figure}
 
@@ -84,7 +95,7 @@ Looking at the Ordered Categorical Features (Figure~\ref{fig:ordCategorical}), w
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=1\textwidth]{figures/ordCategorical/ordCategorical.png}
+\includegraphics[width=1\textwidth]{figures/ordCategorical.png}
 \caption{\label{fig:ordCategorical}Ordered Data.}
 \end{figure}
 
@@ -92,12 +103,15 @@ Finally, looking at the Binary Data (Figure~\ref{fig:binary}), what more draw th
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=1\textwidth]{figures/binary/binary.png}
+\includegraphics[width=1\textwidth]{figures/binary.png}
 \caption{\label{fig:binary}Binary Data.}
 \end{figure}
 
-As can be seen, there are a lot of features that might add up to the classification process, although some features may be not so relevant It is important to notice that the model developed with this amount of data (365 data points) and variables (31) can suffer from the  \href{https://en.wikipedia.org/wiki/Curse_of_dimensionality}{\textit{curse of dimensionality}}. Many of the features will be converted into dummy variables, what could increase the amount of data needed to build an accurate model. Maybe would be interesting to test if treat the binary data as numerical to reduce the necessity to split into dummies (reducing the dimension of the dataset) can increase the performance. It will be made in section 5.
+As can be seen, there are a lot of features that might add up to the classification process, although some features may be not so relevant It is important to notice that the model developed with this amount of data (365 data points) and variables (31) can suffer from the  \href{https://en.wikipedia.org/wiki/Curse_of_dimensionality}{\textit{curse of dimensionality}}. Many of the features will be converted into dummy variables, what could increase the amount of data needed to build an accurate model.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% PREPARING THE DATA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Preparing the Data}
 In this section, I will prepare the data for modeling, training and testing.
@@ -163,30 +177,6 @@ freetime          	goout             	Dalc
 Walc              	health            	absences  
 \end{lstlisting}
 
-Now, all binary data will be converted into $0$/$1$ for future tests. The amount of features just reduced from 48 to 43.
-
-% insert code snippet
-\begin{lstlisting}
-Processed feature columns (43):
-===================
-
-school            	sex               	age               
-address           	famsize           	Pstatus           
-Medu              	Fedu              	Mjob_at_home      
-Mjob_health       	Mjob_other        	Mjob_services     
-Mjob_teacher      	Fjob_at_home      	Fjob_health       
-Fjob_other        	Fjob_services     	Fjob_teacher      
-reason_course     	reason_home       	reason_other      
-reason_reputation 	guardian_father   	guardian_mother   
-guardian_other    	traveltime        	studytime         
-failures          	schoolsup         	famsup            
-paid              	activities        	nursery           
-higher            	internet          	romantic          
-famrel            	freetime          	goout             
-Dalc              	Walc              	health            
-absences    
-\end{lstlisting}
-
 \subsection{Split data into training and test sets}
 So far, I have converted all \textit{categorical} features into numeric values. To be able to judge if the model chosen in the next section will generalize well from its experience, I will hold out part of the data to measure how the algorithms are performing on yet-unseen examples. In this next step, I am going to split the data (both features and corresponding labels) into training and test sets. I will use the function \textit{cross\_validation.train\_test\_split()} from \textit{scikit-learn} for that.
 
@@ -195,14 +185,96 @@ Training set: 296 samples
 Test set: 99 samples
 \end{lstlisting}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% TRAINING AND EVALUATING THE MODELS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Training and Evaluating Models}
-Choose 3 supervised learning models that are available in scikit-learn, and appropriate for this problem. For each model ...
+As stated in Section 1, the model will be evaluated on three factors: $F_1$ Score, The size of the training set needed to build an acceptable model, and the computation resources used. Before selecting the algorithms to test their performance and amount of data needed, I am going to check the resources that different Supervised Learning Algorithms take by training them using different sizes of data sets.  After that, I will select three algorithms to describe and analyze their performance under different training set sizes using their learning curves
 
+\subsection{Computation Resources Test}
+I am going to test computation resources needed for six different algorithms: $Decision Tree$, $SVM$, $K-NN$, $Naive Bayes$, $Logistic Regression$ and $AdaBoost$. I will use the scikit-Learn implementation of these algorithms using their default parameters.
+
+To assess more realistic measurements of the resources used, I will create new datasets with the training and test datasets repeated 8 times. In the next subsection, where I will check the $F_1$ score of some of these models, I will perform the tests again using the original data.
+
+In the Figure~\ref{fig:timetest}, I have measured the time that each algorithm took to fit the model and to perform the predictions. As expected, $K-NN$ took longer in the testing phase than in the training phase. As instead of  fit a model to the data, it holds the examples to find the closest neighbors, this behavior was expected. 
+
+The $SVM$ presented a curious behavior. The time increased sharply and dropped suddenly. As pointed out in the scikit \href{http://scikit-learn.org/stable/modules/svm.html#complexity}{documentation}, the fit time complexity of the SVM is more than quadratic.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\textwidth]{figures/timePerformance.png}
+\caption{\label{fig:timetest}Time Performance of different algorithms}
+\end{figure}
+
+
+The time complexity of the $AdaBoost$ Classifier depends on the \href{http://stackoverflow.com/questions/22397485/what-is-the-o-runtime-complexity-of-adaboost}{number of base learners} used ($Decision Tree$ and the maximum 50, respectively). The time to fit the model has increased with more data, although the time to predict was kept at an acceptable level.
+
+Considering the resources constraints, I will keep testing just the models that presented a relatively stable time both to test and to predict. In the next section, I will analyse the $F_1$ score of the $Gaussian Naive Bayes$, $Decision Tree$ and $Logistic Regression$.
+
+\subsection{Performance Test}
+
+In this subsection, I will analyze each model chosen in the last section, presenting a brief explanation about each one and examining its learning curves.
+
+\subsubsection{Naive Bayes}
+According to \cite{Mitchell}, one highly piratical Bayesian learning method is the naive Bayes learner. Its performance has been shown to be comparable to neural network and decision tree learning in some domains. The model assumes that each feature is conditionally independent given a target value:
+
+$$\upsilon_{NB} = \arg\max_{v_j \in V}P(\upsilon_j) \prod_i P(a_i | \upsilon_j) $$
+
+Where $\upsilon_{NB}$ is the label (passed or not passed, in this case) that maximize this calculation. The model classifies any data point by multiplying the probability of a particular class and the likelihood of observing each feature given that class.
+
+\cite{Hastie_2009} says that, while the model assumption is generally not true, it does simplify the estimation drastically. it also indicates that the probability of a given event probability might be wrong, but the conclusion will be right.
+
+...
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\textwidth]{figures/guassianNB.png}
+\caption{\label{fig:gaussianNB}Naive Bayes Learning Curve}
+\end{figure}
+
+...
+
+The \href{http://scikit-learn.org/stable/modules/naive_bayes.html}{sklearn documentation} states that  one of the common use of the algorithm is in classification and spam filtering. The model requires a small amount of training data to estimate the necessary parameters.
+
+Some of the pros of this model are: inference is cheap; the model has few parameters; empirically successful. A negative side is that The assumption that the attributes be conditional independent of each other is too strong. For example, it can't \href{http://blog.echen.me/2011/04/27/choosing-a-machine-learning-classifier/}{learn} interactions between labels.
+
+...
+
+\subsubsection{Decision Tree}
+...
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\textwidth]{figures/DT.png}
+\caption{\label{fig:DT}Decision Tree Learning Curve}
+\end{figure}
+
+...
+
+\subsubsection{Logistic Regression}
+...
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\textwidth]{figures/LogisticReg.png}
+\caption{\label{fig:LogisticReg}Logistic Regression Learning Curve}
+\end{figure}
+
+...
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% CHOOSING THE BEST MODEL
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Choosing the Best Model}
 ...
 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% REFLECTION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Reflection}
 ...
@@ -211,104 +283,4 @@ Choose 3 supervised learning models that are available in scikit-learn, and appr
 
 \bibliographystyle{plain}
 \bibliography{bibliography/biblio.bib}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\newpage
-\section{Some LaTeX tips}
-\label{sec:latex}
-\subsection{How to Include Figures}
-
-First you have to upload the image file (JPEG, PNG or PDF) from your computer to writeLaTeX using the upload link the project menu. Then use the includegraphics command to include it in your document. Use the figure environment and the caption command to add a number and a caption to your figure. See the code for Figure \ref{fig:frog} in this section for an example.
-
-\begin{figure}[ht]
-\centering
-\includegraphics[width=0.3\textwidth]{frog.jpg}
-\caption{\label{fig:frog}This frog was uploaded to writeLaTeX via the project menu.}
-\end{figure}
-
-\subsection{How to Make Tables}
-
-Use the table and tabular commands for basic tables --- see Table~\ref{tab:widgets}, for example.
-
-\begin{table}[ht]
-\centering
-\begin{tabular}{l|r}
-Item & Quantity \\\hline
-Widgets & 42 \\
-Gadgets & 13
-\end{tabular}
-\caption{\label{tab:widgets}An example table.}
-\end{table}
-
-\subsection{How to Write Mathematics}
-
-\LaTeX{} is great at typesetting mathematics. Let $X_1, X_2, \ldots, X_n$ be a sequence of independent and identically distributed random variables with $\text{E}[X_i] = \mu$ and $\text{Var}[X_i] = \sigma^2 < \infty$, and let
-
-\begin{equation}
-S_n = \frac{X_1 + X_2 + \cdots + X_n}{n}
-      = \frac{1}{n}\sum_{i}^{n} X_i
-\label{eq:sn}
-\end{equation}
-
-denote their mean. Then as $n$ approaches infinity, the random variables $\sqrt{n}(S_n - \mu)$ converge in distribution to a normal $\mathcal{N}(0, \sigma^2)$.
-
-The equation \ref{eq:sn} is very nice.
-
-\subsection{How to Make Sections and Subsections}
-
-Use section and subsection commands to organize your document. \LaTeX{} handles all the formatting and numbering automatically. Use ref and label commands for cross-references.
-
-\subsection{How to Make Lists}
-
-You can make lists with automatic numbering \dots
-
-\begin{enumerate}
-\item Like this,
-\item and like this.
-\end{enumerate}
-\dots or bullet points \dots
-\begin{itemize}
-\item Like this,
-\item and like this.
-\end{itemize}
-\dots or with words and descriptions \dots
-\begin{description}
-\item[Word] Definition
-\item[Concept] Explanation
-\item[Idea] Text
-\end{description}
-
-We hope you find write\LaTeX\ useful, and please let us know if you have any feedback using the help menu above.
-
-
-\begin{thebibliography}{9}
-\bibitem{nano3}
-  K. Grove-Rasmussen og Jesper Nygård,
-  \emph{Kvantefænomener i Nanosystemer}.
-  Niels Bohr Institute \& Nano-Science Center, Københavns Universitet
-
-\end{thebibliography}
 \end{document}

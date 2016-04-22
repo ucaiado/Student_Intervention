@@ -35,8 +35,10 @@ There exists a push from educators and administrators to raise the likelihood of
 \section{Introduction}
 \label{sec:introduction}
 
+% https://goo.gl/i8TQwZ: shorten url for https://www.udacity.com/course/viewer%5C#!/c-nd009/l-5446988865/m-5446493941
+
 \subsection{Some Background}
-As stated by \href{https://www.udacity.com/course/viewer#!/c-nd009/l-5446988865/m-5446493941}{Udacity} in the description for this project, as education has grown to rely more and more on technology, more and more data is available for examination and prediction. Logs of student activities, grades, interactions with teachers and fellow students, and more are now captured through learning management systems.
+As stated by Udacity \footnote{Source: \url{https://goo.gl/i8TQwZ}} in the description for this project, as education has grown to rely more and more on technology, more and more data is available for examination and prediction. Logs of student activities, grades, interactions with teachers and fellow students, and more are now captured through learning management systems.
 
 Within all levels of education, there exists a surge to help increase the likelihood of student success without watering down the education or engaging in behaviors that raise the probability of passing metrics without improving the actual underlying learning. Graduation rates are often the criteria of choice for this, and educators and administrators are after new ways to predict success and failure early enough to stage effective interventions, as well as to identify the effectiveness of different interventions.
 
@@ -46,7 +48,7 @@ The goal for this project is implementing a student intervention system using co
 I will suppose that the data available to create the model is a representative but a small sample of the dataset that I would have access in the production environment. So, besides the typical accuracy requirements for any machine-learning project, I am also going to look for models that are efficient in the use of resources (computation time and memory). Thus, the model will be evaluated on three factors:
 
 \begin{itemize}
-\item Its \href{https://en.wikipedia.org/wiki/F1_score}{$F_1$} Score, summarizing the number of correct positives and correct negatives out of all possible cases. In other words, how well does the model differentiate likely passes from failures
+\item Its $F_1$ \footnote{Source: \url{https://en.wikipedia.org/wiki/F1_score}} Score, summarizing the number of correct positives and correct negatives out of all possible cases. In other words, how well does the model differentiate likely passes from failures
 \item The size of the training set, preferring smaller training sets over larger ones. That is, how much data does the model need to make a reasonable prediction?
 \item The computation resources to make a reliable prediction. How much time and memory is required to correctly identify students that need intervention?
 \end{itemize}
@@ -81,7 +83,8 @@ Graduation rate of the class & 67.09 \%
 \caption{\label{tab:basicfacts}Facts About the Dataset.}
 \end{table}
 
-All the 31 features in the dataset are discrete and Qualitative. There are 14 binary data, 13 ordered categorical variables and other 4 Categorical features. Among them, there are variables such as Father's Job, Family Size, if the student wants to take higher education or if he/she is in a romantic relationship. The data offers a pretty comprehensive profile of student life. At this point, it is hard to say what features are relevant or not. A complete description of each variable can be found on the Github \href{https://github.com/udacity/machine-learning/tree/master/projects/student_intervention}{project page}. There is no missing data on this dataset and no presence of ``real'' outliers.
+% https://goo.gl/dkHKPV: shorten url for https://github.com/udacity/machine-learning/tree/master/projects/student_intervention
+All the 31 features in the dataset are discrete and Qualitative. There are 14 binary data, 13 ordered categorical variables and other 4 Categorical features. Among them, there are variables such as Father's Job, Family Size, if the student wants to take higher education or if he/she is in a romantic relationship. The data offers a pretty comprehensive profile of student life. At this point, it is hard to say what features are relevant or not. A complete description of each variable can be found on the Github project page \footnote{Source: \url{https://goo.gl/dkHKPV}}. There is no missing data on this dataset and no presence of ``real'' outliers.
 
 \subsection{How the features are spread out}
 Before moving on, I am going to plot each feature to see how each inner classes of each variable are divided between the target labels ``Passed'' and ``Not Passed''. In the Figure~\ref{fig:categorical} is plotted the Categorical features of the dataset. Here is possible to see that when the guardian is not the mother nor the father, it is more likely that the pupil not pass. Also, when the mother's occupatsion is teaching (\textit{Fjob}), is likely that the student to pass.
@@ -108,7 +111,7 @@ Finally, looking at the Binary Data (Figure~\ref{fig:binary}), what more draw th
 \caption{\label{fig:binary}Binary Data.}
 \end{figure}
 
-As can be seen, there are a lot of features that might add up to the classification process, although some features may be not so relevant It is important to notice that the model developed with this amount of data (365 data points) and variables (31) can suffer from the  \href{https://en.wikipedia.org/wiki/Curse_of_dimensionality}{\textit{curse of dimensionality}}. Many of the features will be converted into dummy variables, what could increase the amount of data needed to build an accurate model.
+As can be seen, there are a lot of features that might add up to the classification process, although some features may be not so relevant It is important to notice that the model developed with this amount of data (365 data points) and variables (31) can suffer from the  \textit{curse of dimensionality} \footnote{Source:\url{https://en.wikipedia.org/wiki/Curse_of_dimensionality}}. Many of the features will be converted into dummy variables, what could increase the amount of data needed to build an accurate model.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% PREPARING THE DATA
@@ -132,6 +135,8 @@ higher         	internet       	romantic       	famrel
 freetime       	goout          	Dalc           	Walc           
 health         	absences       
 
+
+
 Target column:
 ===================
 passed
@@ -149,7 +154,7 @@ Feature values:
 \subsection{Preprocess feature columns}
 As can be seen above, there are several non-numeric columns in the dataset that need to be converted. The easiest case is when are only two categories, as ``yes'' or ``no'', e.g. \textit{internet}. These are often represented by single binary digit as $0$ or $1$.
 
-According to \cite{Hastie_2009}, when there are more than two categories, the most commonly alternative used is coding via \href{https://www.moresteam.com/whitepapers/download/dummy-variables.pdf}{\textit{dummy variables}}. This method consists in representing a $K$-Level qualitative variable by a vector of $K$ binary variables, where only one of which is ``on'' at a time.
+According to \cite{Hastie_2009}, when there are more than two categories, the most commonly alternative used is coding via \textit{dummy variables} \footnote{Source: \url{https://www.moresteam.com/whitepapers/download/dummy-variables.pdf}}. This method consists in representing a $K$-Level qualitative variable by a vector of $K$ binary variables, where only one of which is ``on'' at a time.
 
 So, for example, the \textit{Fjob} feature will be split into $5$ new features ( \textit{Fjob\_teacher}, \textit{Fjob\_other}, \textit{Fjob\_services}, etc.), and will be assigned a $1$ to one of them and $0$ to all other columns.
 
@@ -200,18 +205,18 @@ To assess more realistic measurements of the resources used, I will create new d
 
 In the Figure~\ref{fig:timetest}, I have measured the time that each algorithm took to fit the model and to perform the predictions. As expected, $K-NN$ took longer in the testing phase than in the training phase. As instead of  fit a model to the data, it holds the examples to find the closest neighbors, this behavior was expected. 
 
-The $SVM$ presented a curious behavior. The time increased sharply and dropped suddenly. As pointed out in the scikit \href{http://scikit-learn.org/stable/modules/svm.html#complexity}{documentation}, the fit time complexity of the SVM is more than quadratic.
+The $SVM$ presented a curious behavior. The time increased sharply and dropped suddenly. As pointed out in the scikit documentation \footnote{Source: \url{http://scikit-learn.org/stable/modules/svm.html\#complexity}}, the fit time complexity of the SVM is more than quadratic.
 
 \begin{figure}[ht!]
 \centering
-\includegraphics[width=1\textwidth]{figures/timePerformance.png}
+\includegraphics[width=0.9\textwidth]{figures/timePerformance.png}
 \caption{\label{fig:timetest}Time Performance of different algorithms}
 \end{figure}
 
+% http://goo.gl/QR1gB8: http://stackoverflow.com/questions/22397485/what-is-the-o-runtime-complexity-of-adaboost
+The time complexity of the $AdaBoost$ Classifier depends on the number of base learners \footnote{Source: \url{http://goo.gl/QR1gB8}} used ($Decision Tree$ and the maximum 50, respectively). The time to fit the model has increased with more data, although the time to predict was kept at an acceptable level.
 
-The time complexity of the $AdaBoost$ Classifier depends on the \href{http://stackoverflow.com/questions/22397485/what-is-the-o-runtime-complexity-of-adaboost}{number of base learners} used ($Decision Tree$ and the maximum 50, respectively). The time to fit the model has increased with more data, although the time to predict was kept at an acceptable level.
-
-Considering the resources constraints, I will keep testing just the models that presented a relatively stable time both to test and to predict. In the next section, I will analyse the $F_1$ score of the $Gaussian Naive Bayes$, $Decision Tree$ and $Logistic Regression$.
+Considering the resources constraints, I will keep testing just the models that presented a relatively stable time both to test and to predict. In the next section, I will analyze the $F_1$ score of the $Gaussian Naive Bayes$, $Decision Tree$ and $Logistic Regression$.
 
 \subsection{Performance Test}
 
@@ -226,7 +231,7 @@ Where $\upsilon_{NB}$ is the label (passed or not passed, in this case) that max
 
 \cite{Hastie_2009} says that, while the model assumption is generally not true, it does simplify the estimation drastically. it also indicates that the probability of a given event probability might be wrong, but the conclusion will be right.
 
-...
+In the Figure~\ref{fig:gaussianNB} is possible to see that the $F_1$ score has stabilized already around 100 data points used to fit the model, but its maximum score it achieved just around 296 data points. The training and test time are pretty close, as shown in the Figure~\ref{fig:timetest}.
 
 \begin{figure}[ht!]
 \centering
@@ -248,17 +253,17 @@ F1 score on training set &            0.8092 &  0.8315 &  0.8120 \\
 \end{table}
 
 
-The \href{http://scikit-learn.org/stable/modules/naive_bayes.html}{sklearn documentation} states that  one of the common use of the algorithm is in classification and spam filtering. The model requires a small amount of training data to estimate the necessary parameters.
+The sklearn documentation \footnote{Source: \url{http://scikit-learn.org/stable/modules/naive_bayes.html}} states that  one of the common use of the algorithm is in classification and spam filtering. The model requires a small amount of training data to estimate the necessary parameters.
 
-Some of the pros of this model are: inference is cheap; the model has few parameters; empirically successful. A negative side is that The assumption that the attributes be conditional independent of each other is too strong. For example, it can't \href{http://blog.echen.me/2011/04/27/choosing-a-machine-learning-classifier/}{learn} interactions between labels.
+Some of the pros of this model are: inference is cheap; the model has few parameters; empirically successful. A negative side is that The assumption that the attributes be conditional independent of each other is too strong. For example, it can't learn interactions between labels \footnote{Source: \url{http://blog.echen.me/2011/04/27/choosing-a-machine-learning-classifier/}}.
 
-...
+Given the resource consumption of the Naive Bayes to train and predict and the $F_1$ Score achieved, this model seems a strong candidate for the final model.
 
 \subsubsection{Decision Tree}
 
 \cite{Mitchell} explained that Decision tree is a method for approximating discrete-valued functions that are robust to noisy data and capable of learning disjunctive expressions. The model classifies instances by sorting them down the tree from the root to some leaf node (which is the label of the data).  It has been applied to a broad range of tasks from learning to diagnose medical cases to learning to assess credit risk of loan applicants.
 
-The \textit{Scikit-learn} uses an optimized version of the CART (Classification and regression trees) algorithm, that \href{http://scikit-learn.org/stable/modules/tree.html#tree}{basically} constructs binary trees using the feature and threshold that yield the largest information gain at each node. So, as shown by \cite{Hastie_2009}, given that there are 2 classes in the dataset (or regions $R_1$ and $R_2$):
+The \textit{Scikit-learn} uses an optimized version of the CART (Classification and regression trees) algorithm, that basically constructs binary trees using the feature and threshold that yield the largest information gain at each node. So, as shown by \cite{Hastie_2009}, given that there are 2 classes in the dataset (or regions $R_1$ and $R_2$):
 
 $$f(x) = \sum_{m=1}^2 c_m I(x \in R_m)$$
 
@@ -268,9 +273,9 @@ Where:
 \item $R_1 (j,s) = \{ X | X_{j}<s\}$ and $R_2 (j,s) = \{ X | X_{j}>s\}$
 \end{itemize}
 
-$I()$ is an \href{https://en.wikipedia.org/wiki/Indicator_function}{indicator function} and $\hat c$ is what should be minimized by tweaking the combination of the splitting feature and the split point $(j,s)$. The procedure to minimize $\hat c$ can be found in \textit{Scikit-learn} \href{http://scikit-learn.org/stable/modules/tree.html#tree}{documentation}.
+$I(.)$ is an indicator function \footnote{Source: \url{https://en.wikipedia.org/wiki/Indicator_function}} and $\hat c$ is what should be minimized by tweaking the combination of the splitting feature and the split point $(j,s)$. The procedure to minimize $\hat c$ can be found in \textit{Scikit-learn} documentation \footnote{Source: \url{http://scikit-learn.org/stable/modules/tree.html\#tree}}.
 
-...
+The figure ~\ref{fig:DT} shows clearly that the model overfits the Training Data set, although it seems that didn't affect the $F_1$ score in the test set. Instead, it continues to grow significantly when more data is added. The time to train and test is similar to the $GaussianNB$ results.
 
 \begin{figure}[ht!]
 \centering
@@ -295,11 +300,17 @@ Still according to the documentation, some advantages of decision trees are: Dec
 
 The disadvantages include: it can create over-complex trees that do not generalize the data well; and if some classes dominate,the tree can be biased. Many disadvantages of this algorithm is mitigated by using decision trees within an ensemble, like $AdaBoost$.
 
-
-...
+An advantage of the $Decision Tree$ algorithm over the $GuassianNB$ is that it could be visualized, what would make it easier to explain to someone without knowledge about Machine Learning. However, It took more data to fit a similar model regarding $F_1$ score when compared to the last method. Also, this particular dataset is imbalanced (there are 60\% of passed and 30\% of not passed), and it can be an issue. Using the model within an ensemble method, as suggest in the last paragraph, is not feasible given the time to train the model, as shown in the Figure~\ref{fig:timetest}.
 
 \subsubsection{Logistic Regression}
-...\cite{Hastie_2009}
+Contrary to its name, logistic regression is a classification method that performs a regression in a logistic (or sigmoid \footnote{Source: \url{https://en.wikipedia.org/wiki/Generalised_logistic_function}}) function (\cite{richert2013building}). In \cite{Hastie_2009} book is said that this model is widely used in biostatistical applications where binary responses occur quite frequently. For instance, patients survive or die, have heart disease or not and so on. This model is usually fit by maximum likelihood, using the conditional probability of $G$ given $X$. The general log-likelihood that should be maximized to $\theta$(that will result in the $\beta$ parameters of the function) is:
+
+$$l(\theta) = \sum_{i=1}^{N} \log{p_{g_{i}}(x_i; \theta)}$$
+
+% http://goo.gl/T7h0Hz: shorten for http://scikit-learn.org/stable/modules/linear_model.html\#logistic-regression
+Where $p_{k}(x_i ; \theta) = Pr(G=k | X = x_i ; \theta)$ and the probabilities sum up to 1. The default implementation of \textit{Scikit-Learn }solves the maximization problem using the C++ library "liblinear" and a penalization function called L2. More detail can be found in the documentation \footnote{Source: \url{http://goo.gl/T7h0Hz}}.
+
+Looking at the Figure~\ref{fig:LogisticReg}, the $F_1$ score stabilize just after 200 data point in the training set, increasing a little bit when the data available grows to 296 points. The time both to training and to predict is less stable than the last models, but it still holds in a acceptable level.
 
 \begin{figure}[ht!]
 \centering
@@ -320,12 +331,21 @@ F1 score on training set &            0.8088 &  0.8269 &  0.8474 \\
 \caption{\label{tab:LogisticRegression}Logistic Regression Measurements}
 \end{table}
 
+% https://goo.gl/ICWc4P: shorthen for https://www.quora.com/What-are-the-advantages-of-logistic-regression-over-decision-trees
+Some advantages \footnote{Source: \url{https://goo.gl/ICWc4P}} of Logistic Regression are that the model is fast, is less sophisticated and easy to inspect. Some of the downsides \footnote{Source: \url{http://d-scholarship.pitt.edu/7034/1/realfinalplus_ETD2006.pdf}} are are that, as any linear model, it is not robust to outliers, and can't handle imbalance data efficiently.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% CHOOSING THE BEST MODEL
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Choosing the Best Model}
+...
+\subsection{Choosing the Optimal Model}
+...
+\subsection{Describing the Model in Layman’s Terms}
+...
+\subsection{Model Tuning}
 ...
 
 

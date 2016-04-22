@@ -76,7 +76,7 @@ Total number of students & 42 \\
 Total number of students & 395 \\
 Number of students who passed & 265 \\
 Number of students who failed & 130 \\
-Number of features & 31 \\
+Number of features & 30 \\
 Graduation rate of the class & 67.09 \%
 
 \end{tabular}
@@ -84,7 +84,9 @@ Graduation rate of the class & 67.09 \%
 \end{table}
 
 % https://goo.gl/dkHKPV: shorten url for https://github.com/udacity/machine-learning/tree/master/projects/student_intervention
-All the 31 features in the dataset are discrete and Qualitative. There are 14 binary data, 13 ordered categorical variables and other 4 Categorical features. Among them, there are variables such as Father's Job, Family Size, if the student wants to take higher education or if he/she is in a romantic relationship. The data offers a pretty comprehensive profile of student life. At this point, it is hard to say what features are relevant or not. A complete description of each variable can be found on the Github project page\footnote{Source: \url{https://goo.gl/dkHKPV}}. There is no missing data on this dataset and no presence of ``real'' outliers.
+All the 30 features in the dataset are discrete and Qualitative. There are 13 binary data, 13 ordered categorical variables and other 4 Categorical features. Among them, there are variables such as Father's Job, Family Size, if the student wants to take higher education or if he/she is in a romantic relationship. The data offers a pretty comprehensive profile of student life. At this point, it is hard to say what features are relevant or not. A complete description of each variable can be found on the Github project page\footnote{Source: \url{https://goo.gl/dkHKPV}}. 
+
+Due to the dataset imbalance, as pointed out by the Code Reviewer, the model will be evaluated using $F_1$ instead of accuracy. Also, there is no missing data on this dataset and no presence of "real" outliers.
 
 \subsection{How the features are spread out}
 Before moving on, I am going to plot each feature to see how each inner classes of each variable are divided between the target labels ``Passed'' and ``Not Passed''. In the Figure~\ref{fig:categorical} is plotted the Categorical features of the dataset. Here is possible to see that when the guardian is not the mother nor the father, it is more likely that the pupil not pass. Also, when the mother's occupatsion is teaching (\textit{Fjob}), is likely that the student to pass.
@@ -111,7 +113,7 @@ Finally, looking at the Binary Data (Figure~\ref{fig:binary}), what more draw th
 \caption{\label{fig:binary}Binary Data.}
 \end{figure}
 
-As can be seen, there are a lot of features that might add up to the classification process, although some features may be not so relevant It is important to notice that the model developed with this amount of data (365 data points) and variables (31) can suffer from the  \textit{curse of dimensionality}\footnote{Source: \url{https://en.wikipedia.org/wiki/Curse_of_dimensionality}}. Many of the features will be converted into dummy variables, what could increase the amount of data needed to build an accurate model.
+As can be seen, there are a lot of features that might add up to the classification process, although some features may be not so relevant It is important to notice that the model developed with this amount of data (365 data points) and variables (30) can suffer from the  \textit{curse of dimensionality}\footnote{Source: \url{https://en.wikipedia.org/wiki/Curse_of_dimensionality}}. Many of the features will be converted into dummy variables, what could increase the amount of data needed to build an accurate model.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% PREPARING THE DATA
@@ -341,14 +343,14 @@ Some advantages\footnote{Source: \url{https://goo.gl/ICWc4P}} of Logistic Regres
 In this section, I will choose the model that best filled the requirements of limited resources and performance based on the experiments I have performed earlier. Thus, I will describe the algorithm in Layman's terms and, finally, tune it using Grid Search.
 
 \subsection{Choosing the Optimal Model}
-The $Logistic Regression$ model is the simplest of all algorithms tested and presented a remarkable performance, especially considering the imbalanced dataset used to train the model. Even this model had presented a performance similar to the other algorithm, it should be considered as the best one due to the Occam's Razor: "Among competing hypotheses, the one with the fewest assumptions should be selected".
+The $Logistic Regression$ model is the simplest of all algorithms tested and presented a remarkable performance, especially considering the imbalanced dataset used to train the model. Even if this model had presented a performance similar to the other algorithms, it should be considered as the best one due to the Occam's Razor: "Among competing hypotheses, the one with the fewest assumptions should be selected".
 
 Considering the time performance, the results of the $Logistic Regression$ was less stable than the other algorithms, when we look at the tables. For instance, the records show that it took $0.0992$ seconds to predict with 200 data points in the training set, against $0.0788$ of the $Decision Tree$ and $0.0801$ of the $GaussianNB$. However, the prediction time of the $Logistic Regression$ was the best one when used 296 data points. It dropped to $0.0662$ seconds to predict, against $0.0924$ from the $Decision Tree$ and $0.0890$ from the Naive Bayes. Overall, the time performance of the algorithm remained at an acceptable level, as can see in the Figure~\ref{fig:timetest}.
 
 Comparing $Logistic Regression$ to $Decision Tree$, it has already achieved a $F_1$ score greater than $0.70$ using just 100 data point to fit the model, while the $Decision Tree$ took around 200 data point to achieve that. Comparing to $GuassianNB$, using 200 data points the Naive Bayes presented a $F_1$ score of $0.7111$. The $Logistic Regression$, $0.7770$. Also, it seems that this amount of data is enough for the model, given that adding more 96 data points just increased the $F_1$ score just $0.003$ units. 
 
 \subsection{Describing the Model in Layman’s Terms}
-As explained before, logistic regression is a classification method that performs a regression in a logistic function. It fits a model by calculating the maximum likelihood, using the conditional probability of G given X. In layman terms, it means that the model estimates its predictions\footnote{Source: \url{https://www.quora.com/What-is-logistic-regression}} using probability. The function approaches\footnote{Source: \url{https://www.quora.com/What-is-logistic-regression/answer/Alaka-Halder}} $0$ and $1$ asymptotically (after the required transformation), so the answer to the model always stay within the $[0,1]$ range. In the context of this project, $0$ means that the model is entirely sure that the student will fail to pass, and $1$ means that it is absolutely certain that student will pass. By default, any value above $0.5$ means that the model is pretty sure that the students will succeed, so it classifies as "passed."
+As explained before, logistic regression is a classification method that performs a regression in a logistic function. It fits a model by calculating the maximum likelihood, using the conditional probability of G given X. In layman terms, it means that the model estimates its predictions\footnote{Source: \url{https://www.quora.com/What-is-logistic-regression}} using probability. The function approaches\footnote{Source: \url{https://www.quora.com/What-is-logistic-regression/answer/Alaka-Halder}} $0$ and $1$ as the amount of data grows (after the required transformation). So, the answer to the model always stays within the [$0$,$1$] range. In the context of this project, $0$ means that the model is entirely sure that the student will fail to pass, and $1$ means that it is absolutely certain that student will pass. Any value above $0.5$ means that the model is pretty sure that the students will succeed, so it classifies as "passed."
 
 \subsection{Model Tuning}
 In this section, I performed a Grid Search through a parameter space looking for the set of parameters that yields the best result. This parameter space is all possible combinations of the following $Logistic Regression$ parameters:
@@ -380,7 +382,7 @@ As was expected, after tuning the model, it performed just slightly better than 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Reflection}
-Although I have found an appropriate model to the task at hand, I believe that I should have done some feature engineering or dimensionality reduction. I believe that the most of the models tested would benefit from a dataset with less dimensions. It would require the implementation of some new steps, including repeat what was done so far some more times gain. Running all the process, again and again, is expected. After all, as I have been learning at Udacity courses, Machine Learning can be very iterative.
+Although I have found an appropriate model to the task at hand, I believe that I should have done some feature engineering or dimensionality reduction. I believe that the most of the models tested would benefit from a dataset with less dimensions. It would require the implementation of some new steps, including repeat what was done so far some more times. It may seem odd perform the whole process again and again, but in the data science work-flow, it is expected.. After all, as I have been learning at Udacity courses, Machine Learning can be very iterative.
 
 
 

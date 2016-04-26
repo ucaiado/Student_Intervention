@@ -45,7 +45,7 @@ Within all levels of education, there exists a surge to help increase the likeli
 \subsection{The Goal}
 The goal for this project is implementing a student intervention system using concepts from Supervised Machine Learning. I am going to choose and develop a model that will predict the likelihood that a given student will pass, thus helping diagnose whether or not an intervention is necessary.
 
-I will suppose that the data available to create the model is a representative but a small sample of the dataset that I would have access in the production environment. So, besides the typical accuracy requirements for any machine-learning project, I am also going to look for models that are efficient in the use of resources (computation time and memory). Thus, the model will be evaluated on three factors:
+I will suppose that the data available to create the model is a representative but a small sample of the dataset that I would have access in the production environment. So, besides the typical accuracy requirements for any machine-learning project, I am also going to look for models that are efficient in the use of resources (computation time). Thus, the model will be evaluated on three factors:
 
 \begin{itemize}
 \item Its $F_1$\footnote{Source: \url{https://en.wikipedia.org/wiki/F1_score}} Score, summarizing the number of correct positives and correct negatives out of all possible cases. In other words, how well does the model differentiate likely passes from failures
@@ -350,7 +350,22 @@ Considering the time performance, the results of the $Logistic Regression$ was l
 Comparing $Logistic Regression$ to $Decision Tree$, it has already achieved a $F_1$ score greater than $0.70$ using just 100 data point to fit the model, while the $Decision Tree$ took around 200 data point to achieve that. Comparing to $GuassianNB$, using 200 data points the Naive Bayes presented a $F_1$ score of $0.7111$. The $Logistic Regression$, $0.7770$. Also, it seems that this amount of data is enough for the model, given that adding more 96 data points just increased the $F_1$ score just $0.003$ units. 
 
 \subsection{Describing the Model in Layman’s Terms}
-As explained before, logistic regression is a classification method that performs a regression in a logistic function. It fits a model by calculating the maximum likelihood, using the conditional probability of G given X. In layman terms, it means that the model estimates its predictions\footnote{Source: \url{https://www.quora.com/What-is-logistic-regression}} using probability. The function approaches\footnote{Source: \url{https://www.quora.com/What-is-logistic-regression/answer/Alaka-Halder}} $0$ and $1$ as the amount of data grows (after the required transformation). So, the answer to the model always stays within the [$0$,$1$] range. In the context of this project, $0$ means that the model is entirely sure that the student will fail to pass, and $1$ means that it is absolutely certain that student will pass. Any value above $0.5$ means that the model is pretty sure that the students will succeed, so it classifies as "passed."
+As explained before, logistic regression is a classification method that performs a regression in a logistic function. It fits a model by calculating the maximum likelihood, using the conditional probability of G given X. 
+
+In layman terms, it means that the model estimates its predictions\footnote{Source: \url{https://www.quora.com/What-is-logistic-regression}} using probability. The function approaches\footnote{Source: \url{https://www.quora.com/What-is-logistic-regression/answer/Alaka-Halder}} $0$ and $1$, getting closer and closer to those values as the feature value grows, but never reaching them. So, the answer to the model always stays within the [$0$, $1$] range. 
+
+To illustrate the way the model works, in the Figure~\ref{fig:logitreg} below,  at the right, I plotted an artificial feature value on the X axis with the corresponding class range, either $0$ or $1$, on the Y axis. What logistic regression does is measure the probability that a given value of a feature to belong to the class $1$. Once the model is fitted to the data,  I could predict class $1$ if $P(feature) > 0.5$, or class $0$ otherwise. It is illustrated in the chart at the left.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.75\textwidth]{figures/logitref.png}
+\caption{\label{fig:logitreg}Ordered Data.}
+\end{figure}
+
+So, for example, using the model above, a feature value of $-1$ would be assigned a probability of 4\% of the observation is part of class 1. As it is below the 0.5 line (the dotted line), the model would assign class 0 to this instance. If the feature value were 7, the probability would be 89\%, and the model would say that the observation is part of class 1.
+
+In the context of this project, 0 means that the model is entirely sure that the student will fail to pass, and 1 means that it is absolutely certain that student will pass. Any value above 0.5 means that the model is pretty sure that the students will succeed, so it classifies as "passed."
+
 
 \subsection{Model Tuning}
 In this section, I performed a Grid Search through a parameter space looking for the set of parameters that yields the best result. This parameter space is all possible combinations of the following $Logistic Regression$ parameters:
